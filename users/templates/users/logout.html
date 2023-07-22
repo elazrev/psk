@@ -1,0 +1,13 @@
+{% extends 'users/base.html' %}
+
+{% block user_content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title text-center">!התנתקת בהצלחה</h5>
+            <p class="card-text text-center" dir="rtl">תודה שהשתמשת באפליקציה שלנו.</p>
+            <p class="text-center"><a href="{% url 'login' %}" class="btn btn-primary">התחבר שוב</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

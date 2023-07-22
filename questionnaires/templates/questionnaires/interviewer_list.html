@@ -1,0 +1,11 @@
+{% extends 'manager/base.html' %}
+{% block content %}
+<h1>Interviewers</h1>
+<ul>
+{% for interviewer in interviewers %}
+    <li><a href="{% url 'questionnaires:interviewer_detail' interviewer.id %}">{{ interviewer.name }}</a></li>
+{% empty %}
+    <li>No interviewers available.</li>
+{% endfor %}
+</ul>
+{% endblock %}

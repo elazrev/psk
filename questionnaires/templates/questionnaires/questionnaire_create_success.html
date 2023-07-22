@@ -1,0 +1,12 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <div class="alert alert-success" role="alert">
+    שאלון נוצר בהצלחה!
+  </div>
+  <a href="{% url 'questionnaire_list' %}" class="btn btn-primary">רשימת השאלונים</a>
+</div>
+
+{% endblock %}

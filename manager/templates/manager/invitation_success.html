@@ -1,0 +1,7 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+    <h1>Invitation Sent Successfully!</h1>
+    <p>Your invitation has been sent successfully.</p>
+    <a href="{% url 'manager:invitations-view' %}">Go Back to Invitation Form</a>
+{% endblock %}

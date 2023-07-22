@@ -1,0 +1,36 @@
+{% extends 'manager/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center">
+  <div class="card w-50">
+    <div class="card-header">
+      <h5>הזמנה חדשה</h5>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="{{ form.invitee_email.id_for_label }}" class="form-label">מייל להזמנה</label>
+          <input type="email" class="form-control" id="{{ form.invitee_email.id_for_label }}" name="{{ form.invitee_email.html_name }}" placeholder="name@example.com">
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            {{ form.is_manager }}  {# Render the is_manager checkbox #}
+            מטפל
+          </label>
+        </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            {{ form.is_patient }}  {# Render the is_patient checkbox #}
+            מטופל
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary">שלח הזמנה</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

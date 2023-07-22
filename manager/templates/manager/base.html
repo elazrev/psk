@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="heb" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 48px 0;
+            transition: all 0.3s;
+        }
+
+        .sidebar.active {
+            left: -240px;
+        }
+
+        .main-content {
+            margin-right: 300px; /* Width of the sidebar */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <ul class="nav justify-content-center">
+        <a class="navbar-brand justify-content-center" href="#">פסיכולוגיה בועטת  <img src="https://lh3.googleusercontent.com/pw/AJFCJaUcxdTD6F5TTNBtONdsrFVRSbdkateWVbaRv8rSD7J76rlNgPq8_Rd0ct1Olo_Ev-9cofXNZMC78YwE9zajc_RjR-qGybA92VZUV3avozZrm_rEzt_7qsXadNNHa9OfV0gYgENxilmu2imKqVSOLhw=w173-h172-s-no?authuser=0" height="30" alt=""></a>
+      </ul>  
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <ul class="navbar-nav px-4">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="{% url 'profile' %}">{{ user.first_name }} {{ user.last_name }}</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav px-4">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link btn btn-outline-danger" href="{% url 'logout' %}"> התנתק </a>
+            </li>
+        </ul>    
+    </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-4 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3 me-0">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'manager:manager-dashboard' %}">
+                            <span data-feather="home"></span>
+                            דשבורד
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="#">
+                          <span data-feather="calendar"></span>
+                          יומן
+                      </a>
+                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="users"></span>
+                            לקוחות
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'questionnaires:questionnaire_list' %}">
+                            <span data-feather="paperclip"></span>
+                            שאלונים
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'manager:invitations-view' %}">
+                            <span data-feather="send"></span>
+                            הזמנות
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="pen-tool"></span>
+                            דוחות
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <span data-feather="book-open"></span>
+                            אירועים
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-8 col-lg-10 main-content">
+            <div class="row">
+                <div class="col-md-12">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="container-fluid text-center">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  feather.replace();
+</script>
+</body>
+</html>

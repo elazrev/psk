@@ -1,0 +1,36 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+
+    <h1>Invitations</h1>
+    <a href="{% url 'manager:send-invitation' %}">Send Invitation</a>
+    <table class="text-center">
+        <thead>
+            <tr>
+                <th>Invitor</th>
+                <th>Invitee Email</th>
+                <th>Created At</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invitation in invitations %}
+                <tr>
+                    <td>{{ invitation.invitor }}</td>
+                    <td>{{ invitation.invitee_email }}</td>
+                    <td>{{ invitation.created_at }}</td>
+                    <td>{{ invitation.invitation_status }}</td>
+                    <td>
+                        <form action="{% url 'manager:delete-invitation' invitation.pk %}" method="POST">
+                            {% csrf_token %}
+                            {% if invitation.invitation_status != 'approved' %}
+                            <button type="submit">Delete</button>
+                            {% endif %}
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

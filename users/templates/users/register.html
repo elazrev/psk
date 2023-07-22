@@ -1,0 +1,31 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% block user_content %}
+
+<div class="card mt-5" dir="rtl">
+    <div class="card-header text-center">
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-ECkj1QHnuBUKRTZrjPR6RBC4ZQKoSBRyAzYRWhNvRf5Sm7pSlBqoYWE0pAAVdlXFNOUEmoKX9s1O2PG5V9vTwJdFzvT19ZBnV4R05jB5QMExeQzl4Z8P013BUsIEvit4WEnCsfEMeQd_KdFO8cGE=w1000-h623-s-no?authuser=0" alt="Logo" height="100">
+    </div>
+    <div class="text-center">
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4 text-center">הרשמה</legend>
+            {{ form|crispy }}
+        </fieldset>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-outline-primary">הרשמה</button>
+            </div>
+    </div>    
+        </form>
+    <div class="border-top pt-3 text-center">
+        <small class="text-center mt-3 text-muted ">
+            כבר יש לך משתמש? <a href="{% url 'login' %}" class="ml-2">התחברות</a>
+        </small>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
