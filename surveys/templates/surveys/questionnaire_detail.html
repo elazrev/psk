@@ -1,0 +1,77 @@
+{% extends 'manager/base.html' %}
+
+{% block title %}Questionnaire Detail{% endblock %}
+
+{% block content %}
+<a class="button btn btn-success" href="{% url 'surveys:questionnaire_update' object.pk %}">עדכן את פרטי השאלון</a>
+<a class="button btn btn-danger" href="{% url 'surveys:questionnaire_delete' object.pk %}" onclick="return confirm('האם אתה בטוח?')">מחק את השאלון</a>
+    <h1 class="mb-4">{{ object.title }}</h1>
+    <p>יוצר: {{ object.creator.first_name }}</p>
+    <p>תאריך יצירה: {{ object.creation_date|date:"F d, Y" }}</p>
+    <p>ייעוד השאלון: {{ object.survey_type }}</p>
+    <br>
+    <h2>מקבצי שאלות</h2>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>שם מקבץ השאלות</th>
+                    <th>הסבר</th>
+                    <th>סוג המקבץ</th>
+                    <th>פעולות</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question_set in question_sets %}
+                <tr>
+                    <td>{{ question_set.title }}</td>
+                    <td>{{ question_set.explanation }}</td>
+                    <td>{{ question_set.get_set_type_display }}</td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="collapse" data-bs-target="#questionsCollapse{{ question_set.pk }}">הצג שאלות</a>
+                        <a href="{% url 'surveys:questionset_update' questionnaire_pk=object.pk pk=question_set.pk %}" class="btn btn-sm btn-success">עריכה</a>
+                        <a href="{% url 'surveys:questionset_delete' pk=question_set.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('האם אתה בטוח שברצונך למחוק את מקבץ השאלות?')">מחיקה</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="accordion-collapse collapse" id="questionsCollapse{{ question_set.pk }}" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                {% if question_set.questions.exists %}
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Question Number</th>
+                                                <th>Question Text</th>
+                                                <th>עריכה</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for question in question_set.questions.all %}
+                                                {% for sentence in question.text_seperator %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ sentence }}</td>
+                                                    <td><a href="{% url 'surveys:question_update' questionnaire_pk=question_set.questionnaire.pk question_set_pk=question_set.pk pk=question.pk %}" class="btn btn-sm btn-success">עריכה</a></td>
+
+                                                </tr>
+                                                {% endfor %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% else %}
+                                    <p>אין עדיין שאלות במקבץ זה</p>
+                                    <a href="{% url 'surveys:question_create' questionnaire_pk=object.pk question_set_pk=question_set.pk %}" class="btn btn-primary">צור שאלה חדשה</a>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'surveys:questionset_create' questionnaire_pk=object.pk %}" class="btn btn-primary">צור מקבץ שאלות חדש</a>
+{% endblock %}

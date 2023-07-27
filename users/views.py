@@ -31,3 +31,18 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'users/profile.html')
+
+
+
+def direction_page(request):
+    if request.user.is_authenticated:
+        user_profile = request.user.profile
+
+        if user_profile.is_manager:
+            return redirect(reverse('manager:manager-dashboard'))
+        elif user_profile.is_patient:
+            return redirect(reverse('patient:patient-dashboard'))
+
+    # If the user is not authenticated or doesn't have a profile, redirect to a login page or homepage.
+    # Example:
+    return redirect('login')  # Replace 'home' with the name of your homepage URL pattern.

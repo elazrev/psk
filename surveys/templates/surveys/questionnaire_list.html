@@ -1,0 +1,15 @@
+{% extends 'manager/base.html' %}
+
+{% block title %}Questionnaires List{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Questionnaires List</h1>
+    <ul class="list-group">
+        {% for questionnaire in questionnaires %}
+            <li class="list-group-item">
+                <a href="{% url 'surveys:questionnaire_detail' questionnaire.pk %}">{{ questionnaire.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'surveys:questionnaire_create' %}" class="btn btn-primary mt-3">Create New Questionnaire</a>
+{% endblock %}

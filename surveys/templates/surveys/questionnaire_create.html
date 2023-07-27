@@ -1,0 +1,43 @@
+{% extends 'manager/base.html' %}
+
+{% block title %}Create New Questionnaire{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <h1>Create New Questionnaire</h1>
+                <form method="post" class="mb-4">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+                {% if questionnaire_created %}
+                    <div class="alert alert-success">
+                        Questionnaire created successfully!
+                    </div>
+                    {% if questionset_created %}
+                        <div class="alert alert-success">
+                            Question set created successfully!
+                        </div>
+                    {% endif %}
+                    <div class="mt-4">
+                        {% if questionset_created %}
+                            <a href="{% url 'surveys:question_create' pk=questionset_created.pk %}" class="btn btn-primary">Create New Question</a>
+                        {% else %}
+                            <a href="{% url 'surveys:questionset_create' pk=questionnaire_created.pk %}" class="btn btn-primary">Create New Question Set</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'patient.apps.PatientConfig',
     'manager.apps.ManagerConfig',
     'users.apps.UsersConfig',
-    'questionnaires.apps.QuestionnairesConfig',
+    'surveys.apps.SurveysConfig',
     "crispy_forms",
     "crispy_bootstrap5",
     'django.contrib.admin',
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-      
+    
 ]
 
 MIDDLEWARE = [
@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
             ],
         },
     },
@@ -132,11 +133,12 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'manager:manager-dashboard'
+LOGIN_REDIRECT_URL = 'direction-page'
 LOGIN_URL = 'login'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 

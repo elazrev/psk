@@ -29,17 +29,18 @@ urlpatterns = [
     path('profile/', user_view.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path('', user_view.direction_page, name='direction-page'),  # This maps the root URL to the direction_page view.
     
 
     # manager section
     path('manager/', include('manager.urls')),
 
+    # surveys section
+    path('manager/surveys/', include('surveys.urls')),
+
     # patient section
     path('patient/', include('patient.urls')),
     
-    # questionnaires section
-    path('manager/questionnaires/', include('questionnaires.urls')),
-
 ]
 
 if settings.DEBUG:
