@@ -3,13 +3,41 @@
 {% block title %}Questionnaires List{% endblock %}
 
 {% block content %}
-    <h1 class="mb-4">Questionnaires List</h1>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><a href="{% url 'surveys:questionnaire_create' %}" class="btn btn-primary my-2 my-lg-0"><b>+</b> צור שאלון חדש </a></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="חפש" aria-label="Search" spellcheck="false" data-ms-editor="true" name="q" type="search" placeholder="Search" aria-label="Search" value="{{ search_query }}">
+                        <button class="btn btn-outline-success" type="submit">חיפוש</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="mb-4">רשימת שאלונים</h1>
     <ul class="list-group">
         {% for questionnaire in questionnaires %}
-            <li class="list-group-item">
-                <a href="{% url 'surveys:questionnaire_detail' questionnaire.pk %}">{{ questionnaire.title }}</a>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="#">{{ questionnaire.title }}</a>
+                <a href="#" class="btn btn-primary">תוכן השאלון</a>
+                <div class="btn-group btn-group-sm" role="group" dir="ltr" aria-label="Questionnaire actions">
+                    <a href="{% url 'surveys:questionnaire_delete' questionnaire.pk %}" class="btn btn-danger">מחק</a>
+                    <a href="{% url 'surveys:questionnaire_update' questionnaire.pk %}" class="btn btn-success">ערוך כותרת</a>
+                    <a href="#" class="btn btn-info">הסבר</a>
+                </div>
             </li>
+        {% empty %}
+            <li class="list-group-item">לא נמצאו שאלונים</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'surveys:questionnaire_create' %}" class="btn btn-primary mt-3">Create New Questionnaire</a>
+</div>
 {% endblock %}

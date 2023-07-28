@@ -41,6 +41,7 @@ urlpatterns = [
     # patient section
     path('patient/', include('patient.urls')),
     
+    
 ]
 
 if settings.DEBUG:
