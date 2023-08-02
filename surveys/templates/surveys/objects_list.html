@@ -1,0 +1,102 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+  
+        <h5>{{ object_list.first.questionnaire.title }}</h5>
+  
+    <div class="container-fluid ">
+    <ol class="list-group list-group w-25 p-3 shadow-lg p-3 mb-5 bg-body-tertiary rounded" dir="ltr">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Questionnaire ID:</div>
+          </div>
+          <span class="badge bg-primary rounded-pill">{{ questionnaire_id }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <div class="fw-bold">Number of objects:</div>
+          </div>
+          <span class="badge bg-primary rounded-pill">{{ object_list|length }}</span>
+        </li>
+        
+      </ol>
+    </div>
+    <!--navbar section-->
+    <ul class="nav justify-content-center mb-4 btn-group">
+        <li class="nav-item">
+            <div class="dropdown">
+            <a class="btn btn-outline-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>+</b>הוסף אובייקט</a>
+         <ul class="dropdown-menu text-center" dir="rtl">
+            <li><a class="dropdown-item" href="{% url 'surveys:new_title' questionnaire_id=questionnaire_id %}">כותרת</a></li>
+            <li><a class="dropdown-item" href="{% url 'surveys:new_explanation' questionnaire_id=questionnaire_id %}">הסבר</a></li>
+            <li><a class="dropdown-item" href="#">תמונה</a></li>
+            <li><a class="dropdown-item" href="{% url 'surveys:new_hint' questionnaire_id=questionnaire_id %}">רמז</a></li>
+          </ul>
+        </div>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-warning my-2 my-lg-0" href="{% url 'surveys:new_divider' questionnaire_id=questionnaire_id %}"><b></b>צור חוצץ</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-outline-info my-2 my-lg-0" href="{% url 'surveys:new_question' questionnaire_id=questionnaire_id %}"><b>+</b>הוסף שאלה</a>
+        </li>
+        <li class="nav-item">
+          
+        </li>
+      </ul>
+
+  {% if object_list %}
+    <table class="table table-striped">
+        <caption>
+            <ul class="nav justify-content-center mb-4 mt-2 btn-group">
+                <li class="nav-item">
+                    <div class="dropup">
+                    <a class="btn btn-outline-success dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>+</b>הוסף אובייקט</a>
+                 <ul class="dropdown-menu text-center" dir="rtl">
+                    <li><a class="dropdown-item" href="{% url 'surveys:new_title' questionnaire_id=questionnaire_id %}">כותרת</a></li>
+                    <li><a class="dropdown-item" href="{% url 'surveys:new_explanation' questionnaire_id=questionnaire_id %}">הסבר</a></li>
+                    <li><a class="dropdown-item" href="#">תמונה</a></li>
+                    <li><a class="dropdown-item" href="{% url 'surveys:new_hint' questionnaire_id=questionnaire_id %}">רמז</a></li>
+                  </ul>
+                </div>
+                </li>
+                <li class="nav-item">
+                  <a class="btn btn-outline-warning my-2 my-lg-0" href="{% url 'surveys:new_divider' questionnaire_id=questionnaire_id %}"><b></b>צור חוצץ</a>
+                </li>
+                <li class="nav-item">
+                  <a class="btn btn-outline-info my-2 my-lg-0" href="{% url 'surveys:new_question' questionnaire_id=questionnaire_id %}"><b>+</b>הוסף שאלה</a>
+                </li>
+                <li class="nav-item">
+                  
+                </li>
+              </ul>
+        </caption>
+        <thead>
+        <tr>
+            <th>#</th>
+          <th>Type</th>
+          <th>Content</th>
+          <th>parent</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for obj in object_list %}
+          <tr>
+            <td>{{ obj.hierarchy_counter }}</td>
+            <td>{{ obj.obj_type }}</td>
+            <td>{{ obj.content }}</td>
+            <td>{{ obj.parent }}</td>
+            <td>
+                <a href="{% url 'surveys:question_update' questionnaire_id=obj.questionnaire.id pk=obj.pk %}" class="btn btn-primary">Edit</a>
+              <a href="{% url 'surveys:object_delete' questionnaire_id=obj.questionnaire.id pk=obj.pk %}" class="btn btn-danger">Delete</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No objects found.</p>
+  {% endif %}
+
+{% endblock %}

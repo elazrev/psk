@@ -13,7 +13,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="חפש" aria-label="Search" spellcheck="false" data-ms-editor="true" name="q" type="search" placeholder="Search" aria-label="Search" value="{{ search_query }}">
+                        <input class="form-control me-2" type="search" placeholder="חפש שאלון" aria-label="Search" spellcheck="false" data-ms-editor="true" name="q" type="search" placeholder="Search" aria-label="Search" value="{% if search_query %}{{ search_query }}{% endif %}">
                         <button class="btn btn-outline-success" type="submit">חיפוש</button>
                     </form>
                 </li>
@@ -27,12 +27,13 @@
     <ul class="list-group">
         {% for questionnaire in questionnaires %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="#">{{ questionnaire.title }}</a>
-                <a href="#" class="btn btn-primary">תוכן השאלון</a>
+                <a clastype="button"s data-bs-toggle="popover" data-bs-title="{{ questionnaire.title }}" data-bs-content="{{ questionnaire.description }}">{{ questionnaire.title }}</a>
+                <a href="{% url 'surveys:obj_list' questionnaire.pk %}" class="btn btn-primary">תוכן השאלון</a>
+                <small>נוצר בתאריך {{ questionnaire.created|date:"d-m-y" }}</small>
                 <div class="btn-group btn-group-sm" role="group" dir="ltr" aria-label="Questionnaire actions">
                     <a href="{% url 'surveys:questionnaire_delete' questionnaire.pk %}" class="btn btn-danger">מחק</a>
                     <a href="{% url 'surveys:questionnaire_update' questionnaire.pk %}" class="btn btn-success">ערוך כותרת</a>
-                    <a href="#" class="btn btn-info">הסבר</a>
+                    <a href="#" class="btn btn-warning">צפה כאורח</a>
                 </div>
             </li>
         {% empty %}
@@ -41,3 +42,4 @@
     </ul>
 </div>
 {% endblock %}
+

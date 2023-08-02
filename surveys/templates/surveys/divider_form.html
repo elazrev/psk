@@ -1,13 +1,16 @@
 {% extends 'manager/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <h1>צור שאלון חדש</h1>
+    
     <div class="card mt-5" dir="rtl">
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
                 {{ form|crispy}}
-                <button type="submit" class="btn btn-outline-primary">אישור</button>
+                {% if last_title %}
+                    <p>סיימת עם כל האלמנטים של - {{ last_title }}?</p>
+                {% endif %}
+                <button type="submit" class="btn btn-outline-warning">צור חוצץ</button>
             </form>
         </div>
     </div>

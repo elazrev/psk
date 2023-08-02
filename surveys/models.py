@@ -37,6 +37,9 @@ class Obj(models.Model):
     content = models.TextField()
     hierarchy_counter = models.CharField(max_length=20, blank=True)
     hierarchy_position = models.IntegerField(default=0)
+    
+    def __str__(self):
+            return f'{self.obj_type} - {self.content}'
 
     def save(self, *args, **kwargs):
         if not self.hierarchy_counter:
@@ -44,13 +47,25 @@ class Obj(models.Model):
                 siblings = self.parent.sub_objs.all()
                 siblings_count = siblings.count()
                 if siblings_count == 0:
-                    self.hierarchy_counter = '1'
+                    self.hierarchy_counter = f'{self.parent.hierarchy_counter}.1'
                 else:
-                    last_sibling = siblings.order_by('hierarchy_counter').last()
-                    last_sibling_hierarchy = last_sibling.hierarchy_counter
-                    last_sibling_number = int(last_sibling_hierarchy.split('.')[-1])
-                    new_sibling_number = last_sibling_number + 1
-                    self.hierarchy_counter = f'{last_sibling_hierarchy.rsplit(".", 1)[0]}.{new_sibling_number}'
+                    if self.parent.obj_type == 'divider':
+                        last_sibling = siblings.filter(hierarchy_counter__startswith=self.parent.hierarchy_counter).last()
+                        if last_sibling:
+                            last_sibling_number = int(last_sibling.hierarchy_counter[len(self.parent.hierarchy_counter) + 1:])
+                            new_sibling_number = last_sibling_number + 1
+                        else:
+                            new_sibling_number = 1
+                        self.hierarchy_counter = f'{self.parent.hierarchy_counter}.{new_sibling_number}'
+                    else:
+                        last_sibling = siblings.filter(hierarchy_counter__startswith=self.parent.hierarchy_counter).exclude(obj_type='divider').last()
+                        if last_sibling:
+                            last_sibling_hierarchy = last_sibling.hierarchy_counter
+                            last_sibling_number = int(last_sibling_hierarchy[len(self.parent.hierarchy_counter) + 1:])
+                            new_sibling_number = last_sibling_number + 1
+                        else:
+                            new_sibling_number = 1
+                        self.hierarchy_counter = f'{self.parent.hierarchy_counter}.{new_sibling_number}'
             else:
                 siblings = self.questionnaire.objs.filter(parent__isnull=True)
                 siblings_count = siblings.count()
@@ -61,17 +76,8 @@ class Obj(models.Model):
                     last_sibling_number = int(last_sibling.hierarchy_counter)
                     self.hierarchy_counter = str(last_sibling_number + 1)
         super().save(*args, **kwargs)
-    
-    def hierarchy_position(self):
-        counter = Obj.objects.filter(questionnaire=self.questionnaire).count()
-        if counter:
-            self.hierarchy_position = counter + 1
-        else:
-            self.hierarchy_position  = 1
-        self. Save()
-
-    def __str__(self):
-        return self.content
+        
+        
     
 class Answer(models.Model):
     obj_temp_id = models.IntegerField()

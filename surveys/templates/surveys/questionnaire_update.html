@@ -1,11 +1,12 @@
-{% extends 'base.html' %}
+{% extends 'manager/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>Edit "{{ questionnaire.title }}"</h1>
+    <h1>ערוך את  "{{ questionnaire.title }}"</h1>
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-">Save</button>
     </form>
 {% endblock %}

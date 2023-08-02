@@ -6,13 +6,13 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col">
-                <h1>Delete Questionnaire</h1>
-                <p>Are you sure you want to delete the questionnaire "{{ object.title }}"?</p>
+                <h1>מחיקת שאלון</h1>
+                <p>האם אתה בטוח שברצונך למחוק את שאלון -  "{{ object.title }}"?</p>
                 <form method="post" class="d-inline">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn btn-danger">כן, מחק</button>
                 </form>
-                <a href="{% url 'surveys:questionnaire_detail' object.pk %}" class="btn btn-secondary ml-2">Cancel</a>
+                <a href="{% url 'surveys:questionnaire_list' %}" class="btn btn-secondary ml-2">ביטול</a>
             </div>
         </div>
     </div>

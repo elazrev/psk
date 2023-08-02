@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <h1>{{ questionnaire.title }}</h1>
-
-    <a href="{% url 'surveys:questionnaire_update' questionnaire.pk %}">Edit</a>
-    <a href="{% url 'surveys:questionnaire_delete' questionnaire.pk %}">Delete</a>
-{% endblock %}
