@@ -29,6 +29,7 @@ class Obj(models.Model):
         ('agreement', 'שאלת הצבה'),
         ('self_rating', 'שאלת דירוג עצמי'),
         ('self_choice', 'שאלת בחירה עצמית'),
+        ('Completing', 'השלמת משפטים'),
     )
     
     questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, related_name='objs')
@@ -77,17 +78,29 @@ class Obj(models.Model):
                     self.hierarchy_counter = str(last_sibling_number + 1)
         super().save(*args, **kwargs)
         
+    def text_spliter(self):
+        return self.content.split('*')
+    
+    def completing_spliter(self):
+        return self.content.split(';')
+            
+        
         
     
+
 class Answer(models.Model):
-    obj_temp_id = models.IntegerField()
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="answer_sender")
     responder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="answer_responder")
-    content = models.TextField()
+    question = models.ForeignKey(Obj, on_delete=models.CASCADE, null=True, blank=True, related_name="related_question")
+    content = models.TextField(null=True, blank=True)
     created = models.DateTimeField(default=now)
 
-    def obj(self):
-        return Obj.objects.get(pk=self.obj_temp_id)
-
     def __str__(self):
-        return self.content
+        return f"Responder: {self.responder}, Question: {self.question}, Answer: {self.content}"
+
+    def get_multi_answer(self):
+        return self.content.split('*')
+
+    def set_multi_answer(self, answers):
+        self.content = '*'.join(answers)
+        

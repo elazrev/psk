@@ -11,7 +11,8 @@ from .views import (QuestionnaireListView,
                     DividerCreateView,
                     TitleCreateView, 
                     ExplanationCreateView,
-                    HintCreateView,)
+                    HintCreateView,
+                    AnswerCreateView,)  # Add the AnswerCreateView here
 
 app_name = 'surveys'
 
@@ -29,4 +30,5 @@ urlpatterns = [
     path('<int:questionnaire_id>/new_title/', TitleCreateView.as_view(), name='new_title'),
     path('<int:questionnaire_id>/new_explanation/', ExplanationCreateView.as_view(), name='new_explanation'),
     path('<int:questionnaire_id>/new_hint/', HintCreateView.as_view(), name='new_hint'),
+    path('<int:questionnaire_id>/answer/', AnswerCreateView.as_view(), name='answer_create'),  # Add this line for the AnswerCreateView
 ]

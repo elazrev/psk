@@ -1,5 +1,5 @@
 from django import forms
-from surveys.models import Obj
+from surveys.models import Obj, Answer
 
 
 class ObjForm(forms.ModelForm):
@@ -21,6 +21,15 @@ class ObjForm(forms.ModelForm):
                 ('agreement', 'שאלת הצבה'),
                 ('self_rating', 'שאלת דירוג עצמי'),
                 ('self_choice', 'שאלת בחירה עצמית'),
+                ('Completing', 'השלמת משפטים'),
             ]
             self.fields['obj_type'].choices = question_choices
             self.fields['obj_type'].widget.attrs.update({'class': 'form-control'})
+            
+            
+
+class AnswerForm(forms.ModelForm):
+    
+    class Meta:
+        model = Answer
+        fields = ['content']

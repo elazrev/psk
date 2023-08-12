@@ -1,0 +1,81 @@
+{% extends 'manager/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>שאלון {{ questionnaire.title }}</h1>
+<h6>שולח : {{ questionnaire.creator.first_name }}</h6>
+
+<form id="answerForm" method="post" class="row g-3 mt-4">
+    {% csrf_token %}
+  {% for obj in objects %}
+    {% if obj.obj_type == 'title' %}
+      <h5>{{ obj.content }}</h5>
+    {% elif obj.obj_type == 'explanation' %}
+      <div class="card">
+        <div class="card-body">
+          {{ obj.content }}
+        </div>
+      </div>
+    
+      {% elif obj.obj_type == 'hints' %}
+      <div class="form-text">{{ obj.content }}</div>
+    
+      {% elif obj.obj_type == 'divider' %}
+        <hr>
+    
+        {% elif obj.obj_type == 'single_choice' %}
+            {% for question in obj.text_spliter %}
+        <div class="container text-center">
+            <div class="row justify-content-md-center">
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault{{ forloop.counter }}">{{ question }}
+                </label>
+          </div>
+        </div>
+    </div>
+        {% endfor %}
+
+    {% elif obj.obj_type == 'multiple_choice' %}
+        {% for question in obj.text_spliter %}
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+              {{ question }}
+            </label>
+          </div>
+        {% endfor %}
+    
+        {% elif obj.obj_type == 'rating' %}
+        {% for question in obj.text_spliter %}
+            <div class="row mb-3">
+                <label for="formGroupExampleInput" class="col-sm-6 col-form-label">{{ question }}</label>
+                <div class="col-sm-6">
+                    {% for i in raiting_range %}
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="rating_{{ obj.id }}_{{ loop.index }}" id="rating_{{ obj.id }}_{{ i }}" value="{{ i }}">
+                        <label class="form-check-label" for="rating_{{ obj.id }}_{{ i }}">{{ i }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+    {% endfor %}
+    
+    
+    {% else %}
+      {% for question in obj.text_spliter %}
+      <div class="row justify-content-md-center">
+        <div class="col">
+        <label for="formGroupExampleInput" class="form-label">{{ question }}</label>
+        </div>
+        <div class="col">
+        <input type="text" class="form-control" name="answer_{{ obj.id }}_{{ question }}" placeholder="הכנס תשובה כאן">
+        </div>  
+    </div>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+  <button type="submit" id="submitButton">Submit</button>
+</div>
+</form>
+
+{% endblock %}

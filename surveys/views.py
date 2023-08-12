@@ -1,13 +1,15 @@
 from functools import partial
+from itertools import groupby
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView, CreateView, DeleteView, DetailView, UpdateView
 from .models import Questionnaire
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Questionnaire, Obj
-from django.shortcuts import render, redirect
+from .models import Questionnaire, Obj, Answer
+from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import HiddenInput
-from .forms import ObjForm
+from .forms import ObjForm, AnswerForm
+from django.views.generic.edit import FormView
 
 
 
@@ -69,6 +71,7 @@ class ObjListView(ListView):
     model = Obj
     template_name = 'surveys/objects_list.html'
     context_object_name = 'object_list'
+    paginate_by = 10
 
     def get_queryset(self):
         questionnaire_id = self.kwargs['questionnaire_id']
@@ -96,6 +99,11 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
 
     def get_form_class(self):
         return ObjForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['questionnaire_id'] = self.kwargs.get('questionnaire_id')
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -118,13 +126,21 @@ class QuestionCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('surveys:obj_list', kwargs={'questionnaire_id': self.object.questionnaire.id})
+        if 'done' in self.request.POST:
+            return reverse_lazy('surveys:obj_list', kwargs={'questionnaire_id': self.object.questionnaire.id})
+        elif 'more' in self.request.POST:
+            return reverse_lazy('surveys:new_question', kwargs={'questionnaire_id': self.object.questionnaire.id})
 
 class QuestionUpdateView(LoginRequiredMixin, UpdateView):
     model = Obj
     template_name = 'surveys/question_form.html'
     fields = ['obj_type', 'content']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['questionnaire_id'] = self.kwargs.get('questionnaire_id')
+        return context
+    
     def get_success_url(self):
         return reverse_lazy('surveys:obj_list', kwargs={'questionnaire_id': self.object.questionnaire.id})
 
@@ -215,3 +231,65 @@ class HintCreateView(LoginRequiredMixin, CreateView):
             obj.parent = None
         obj.save()
         return redirect(reverse_lazy('surveys:obj_list', kwargs={'questionnaire_id': questionnaire_id}))
+    
+    
+    # Answer section
+class AnswerCreateView(LoginRequiredMixin, FormView):
+    form_class = AnswerForm
+    template_name = 'surveys/answer_form.html'
+    
+    
+    
+
+    def get_success_url(self):
+        return reverse_lazy('surveys:questionnaire_detail', kwargs={'pk': self.kwargs['questionnaire_id']})
+
+    def form_valid(self, form):
+        answer = form.save(commit=False)
+        answer.sender = self.request.user
+        answer.responder = self.request.user
+
+        # Get the questionnaire_id from the URL keyword arguments
+        questionnaire_id = self.kwargs['questionnaire_id']
+
+        try:
+            question = Obj.objects.get(pk=questionnaire_id)
+        except Obj.DoesNotExist:
+            # Handle the case when the Obj instance does not exist, for example, redirect to a different page or show an error message
+            pass
+        else:
+            # Get the answer from the form and set it in the answer model
+            answer_value = self.request.POST.get(f"answer_{question.id}")
+            answer.content = answer_value
+            answer.question = question
+            answer.save()
+
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        questionnaire_id = self.kwargs.get('questionnaire_id')
+        try:
+            question = Obj.objects.get(pk=questionnaire_id)
+        except Obj.DoesNotExist:
+            # Handle the case when the Obj instance does not exist, for example, redirect to a different page or show an error message
+            pass
+        else:
+            kwargs['initial'] = {'question': question}
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        questionnaire_id = self.kwargs.get('questionnaire_id')
+        questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
+        context['questionnaire'] = questionnaire
+        # Fetch all objects for the given questionnaire
+        objects = Obj.objects.filter(questionnaire=questionnaire).all()
+        context['objects'] = objects
+        raiting_range = range(1, 6)
+        context['raiting_range'] = raiting_range
+
+        return context
+
+    
+
