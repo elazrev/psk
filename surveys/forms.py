@@ -31,5 +31,5 @@ class ObjForm(forms.ModelForm):
 class AnswerForm(forms.ModelForm):
     
     class Meta:
-        model = Answer
+        model = Obj, Answer
         fields = ['content']

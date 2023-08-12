@@ -239,8 +239,6 @@ class AnswerCreateView(LoginRequiredMixin, FormView):
     template_name = 'surveys/answer_form.html'
     
     
-    
-
     def get_success_url(self):
         return reverse_lazy('surveys:questionnaire_detail', kwargs={'pk': self.kwargs['questionnaire_id']})
 
