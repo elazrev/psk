@@ -103,4 +103,7 @@ class Answer(models.Model):
 
     def set_multi_answer(self, answers):
         self.content = '*'.join(answers)
+    
+    def completing_spliter(self):
+        return self.content.split(';')
         

@@ -33,7 +33,7 @@
                 <div class="btn-group btn-group-sm" role="group" dir="ltr" aria-label="Questionnaire actions">
                     <a href="{% url 'surveys:questionnaire_delete' questionnaire.pk %}" class="btn btn-danger">מחק</a>
                     <a href="{% url 'surveys:questionnaire_update' questionnaire.pk %}" class="btn btn-success">ערוך כותרת</a>
-                    <a href="#" class="btn btn-warning">צפה כאורח</a>
+                    <a href="{% url 'surveys:answer_create' questionnaire.pk %}" class="btn btn-warning">צפה כאורח</a>
                 </div>
             </li>
         {% empty %}

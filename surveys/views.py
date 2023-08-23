@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import HiddenInput
 from .forms import ObjForm, AnswerForm
 from django.views.generic.edit import FormView
+from formtools.wizard.views import SessionWizardView
 
 
 
@@ -234,58 +235,59 @@ class HintCreateView(LoginRequiredMixin, CreateView):
     
     
     # Answer section
+from django.shortcuts import get_object_or_404
+from django.views.generic.edit import FormView
+from .forms import DynamicQuestionnaireForm
+from .models import Questionnaire, Obj
+
 class AnswerCreateView(LoginRequiredMixin, FormView):
-    form_class = AnswerForm
     template_name = 'surveys/answer_form.html'
+    form_class = DynamicQuestionnaireForm
     
-    
-    def get_success_url(self):
-        return reverse_lazy('surveys:questionnaire_detail', kwargs={'pk': self.kwargs['questionnaire_id']})
-
-    def form_valid(self, form):
-        answer = form.save(commit=False)
-        answer.sender = self.request.user
-        answer.responder = self.request.user
-
-        # Get the questionnaire_id from the URL keyword arguments
-        questionnaire_id = self.kwargs['questionnaire_id']
-
-        try:
-            question = Obj.objects.get(pk=questionnaire_id)
-        except Obj.DoesNotExist:
-            # Handle the case when the Obj instance does not exist, for example, redirect to a different page or show an error message
-            pass
-        else:
-            # Get the answer from the form and set it in the answer model
-            answer_value = self.request.POST.get(f"answer_{question.id}")
-            answer.content = answer_value
-            answer.question = question
-            answer.save()
-
-        return super().form_valid(form)
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         questionnaire_id = self.kwargs.get('questionnaire_id')
-        try:
-            question = Obj.objects.get(pk=questionnaire_id)
-        except Obj.DoesNotExist:
-            # Handle the case when the Obj instance does not exist, for example, redirect to a different page or show an error message
-            pass
-        else:
-            kwargs['initial'] = {'question': question}
+        objects = Obj.objects.filter(questionnaire_id=questionnaire_id)
+        kwargs['objects'] = objects
+    
+        initial_data = {}
+        for question in objects:
+            obj_type = question.obj_type
+            field_name = f"{obj_type}"
+            if obj_type == 'open_question' or obj_type == 'Completing':
+                initial_data[field_name] = ''  # Set initial value for open_question and Completing
+
+        kwargs['initial'] = initial_data
+
         return kwargs
 
+    
+    def form_valid(self, form):
+        questionnaire_id = self.kwargs['questionnaire_id']
+        questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
+        questions = Obj.objects.filter(questionnaire=questionnaire).all()
+
+        for question in questions:
+            answer_content = form.cleaned_data[f"answer_{question.id}"]
+            Answer.objects.create(
+                sender=self.request.user,  # Set the sender field to the logged-in user
+                responder=self.request.user,
+                question=question,
+                content=answer_content
+            )
+
+        return super().form_valid(form)
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         questionnaire_id = self.kwargs.get('questionnaire_id')
         questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id)
-        context['questionnaire'] = questionnaire
-        # Fetch all objects for the given questionnaire
         objects = Obj.objects.filter(questionnaire=questionnaire).all()
+        context['questionnaire'] = questionnaire
         context['objects'] = objects
-        raiting_range = range(1, 6)
-        context['raiting_range'] = raiting_range
+
+        form = self.get_form()  # Get the form instance
+        context['form'] = form  # Add the form instance to the context
 
         return context
 
