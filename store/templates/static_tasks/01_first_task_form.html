@@ -1,0 +1,62 @@
+{% extends 'manager/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="card" style="width: 35rem;">
+    <div class="card-header text-center">
+      שאלון הכירות
+    </div>
+    <div class="card-body text-center">
+      <h5 class="card-title">מלאו במהירות את הרשימות הבאות. הניסוחים כתובים בלשון זכר אבל מתייחסים גם לבעלות כרומוזומים XX</h5>
+      <form method="post">
+        {% csrf_token %}
+        <div class="row card mb-3">
+          <div class="card-header">
+            {{ form.question_1 }}
+          </div>
+          <ul class="list-group list-group-flush" dir="rtl">
+            <li class="list-group-item">{{ form.input_1_1 }}1.</li>
+            <li class="list-group-item">{{ form.input_1_2 }}2.</li>
+            <li class="list-group-item">{{ form.input_1_3 }}3.</li>
+            <li class="list-group-item">{{ form.input_1_4 }}4.</li>
+          </ul>
+        </div>
+        <div class="row card mb-3">
+          <div class="card-header">
+            {{ form.question_2 }}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ form.input_2_1 }}</li>
+            <li class="list-group-item">{{ form.input_2_2 }}</li>
+            <li class="list-group-item">{{ form.input_2_3 }}</li>
+            <li class="list-group-item">{{ form.input_2_4 }}</li>
+          </ul>
+        </div>
+        <div class="row card mb-3">
+          <div class="card-header">
+            {{ form.question_3 }}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ form.input_3_1 }}</li>
+            <li class="list-group-item">{{ form.input_3_2 }}</li>
+            <li class="list-group-item">{{ form.input_3_3 }}</li>
+          </ul>
+        </div>
+        <div class="row card mb-3">
+          <div class="card-header">
+            {{ form.question_4 }}
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ form.input_4_1 }}</li>
+            <li class="list-group-item">{{ form.input_4_2 }}</li>
+            <li class="list-group-item">{{ form.input_4_3 }}</li>
+          </ul>
+        </div>
+        <button type="submit" class="btn btn-primary rounded-pill">Next</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
