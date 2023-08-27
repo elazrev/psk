@@ -1,0 +1,52 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+
+<h5>החנות שלנו</h5>
+
+<div class="container text-center">
+<div class="row row-cols-auto">
+<div class="col card text-center mb-3" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">שאלון הכירות #1</h5>
+      <p class="card-text">הכר את המטופל</p>
+      <a href="{% url 'store:first-impression' %}" class="btn btn-primary">לדף השאלון</a>
+    </div>
+  </div>
+
+  <div class="col card text-center mb-3" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">השלמת משפטים</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
+  <div class="col card text-center mb-3" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
+  <div class="col card text-center mb-3" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
+  <div class="col card text-center mb-3" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">Special title treatment</h5>
+      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+
+</div>
+</div>
+
+{% endblock %}

@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'manager.apps.ManagerConfig',
     'users.apps.UsersConfig',
     'surveys.apps.SurveysConfig',
+    'store.apps.StoreConfig',
     "crispy_forms",
     'formtools',
     "crispy_bootstrap5",

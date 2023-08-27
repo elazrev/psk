@@ -41,6 +41,9 @@ urlpatterns = [
     # patient section
     path('patient/', include('patient.urls')),
     
+     # store section
+    path('store/', include('store.urls')),
+    
     
 ]
 
