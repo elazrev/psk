@@ -12,15 +12,27 @@
       <form method="post">
         {% csrf_token %}
         <div class="row card mb-3">
-          <div class="card-header">
-            {{ form.question_1 }}
-          </div>
-          <ul class="list-group list-group-flush" dir="rtl">
-            <li class="list-group-item">{{ form.input_1_1 }}1.</li>
-            <li class="list-group-item">{{ form.input_1_2 }}2.</li>
-            <li class="list-group-item">{{ form.input_1_3 }}3.</li>
-            <li class="list-group-item">{{ form.input_1_4 }}4.</li>
-          </ul>
+            <div class="card-header">
+                {{ form.question_1 }}
+            </div>
+            <ul class="list-group list-group-flush" dir="rtl">
+                <li class="list-group-item">
+                    {{ form.input_1_1 }}
+                    <span class="input-number">1.</span>
+                </li>
+                <li class="list-group-item">
+                    {{ form.input_1_2 }}
+                    <span class="input-number">2.</span>
+                </li>
+                <li class="list-group-item">
+                    {{ form.input_1_3 }}
+                    <span class="input-number">3.</span>
+                </li>
+                <li class="list-group-item">
+                    {{ form.input_1_4 }}
+                    <span class="input-number">4.</span>
+                </li>
+            </ul>
         </div>
         <div class="row card mb-3">
           <div class="card-header">
@@ -58,5 +70,23 @@
     </div>
   </div>
 </div>
+
+<style>
+  .input-number {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px; /* Adjust the gap as needed */
+  }
+
+  .input-number {
+    float: right;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.list-group-item input {
+    width: 100%; /* Adjust this value to your preference */
+}
+</style>
 
 {% endblock %}

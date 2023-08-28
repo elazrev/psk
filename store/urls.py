@@ -16,7 +16,7 @@ urlpatterns = [
     # Static Tasks Pages
     path('01', FirstImpressionView.as_view(), name='first-impression'),
     path('01_form', TaskOnePart1View.as_view(), name='01_form'),
-    path('01_part_2', TaskOnePart2View.as_view(), name='01_form_part_2'),
+    path('01_form_part_2', TaskOnePart2View.as_view(), name='01_form_part_2'),
 
 
 ]
