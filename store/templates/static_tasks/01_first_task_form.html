@@ -72,4 +72,14 @@
   </div>
 </div>
 
+{% if form.errors %}
+<ul class="errorlist">
+    {% for field, errors in form.errors.items %}
+        <li>{{ field }}:
+            {% for error in errors %}{{ error }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 {% endblock %}

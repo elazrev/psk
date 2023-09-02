@@ -112,7 +112,7 @@ class FullAnswer(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
     responder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="responder")
     questionnaire = models.CharField(max_length=200, null=True, blank=True)
-    content = models.TextField(null=True, blank=True)
+    content = models.JSONField(null=True, blank=True)
     created_date = models.DateTimeField(default=now)
 
     def __str__(self):

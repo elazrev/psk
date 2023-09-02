@@ -28,19 +28,18 @@ class TaskOnePart1(forms.Form):
     input_4_1 = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
     input_4_2 = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
     input_4_3 = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    input_4_4 = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     def get_dictionary(self):
-        data = {
-            'question_1': [self.cleaned_data['input_1_1'], self.cleaned_data['input_1_2'],
+        data = {'part_1': {
+            self.question_1: [self.cleaned_data['input_1_1'], self.cleaned_data['input_1_2'],
                            self.cleaned_data['input_1_3'], self.cleaned_data['input_1_4']],
-            'question_2': [self.cleaned_data['input_2_1'], self.cleaned_data['input_2_2'],
+            self.question_2: [self.cleaned_data['input_2_1'], self.cleaned_data['input_2_2'],
                            self.cleaned_data['input_2_3'], self.cleaned_data['input_2_4']],
-            'question_3': [self.cleaned_data['input_3_1'], self.cleaned_data['input_3_2'],
+            self.question_3: [self.cleaned_data['input_3_1'], self.cleaned_data['input_3_2'],
                            self.cleaned_data['input_3_3']],
-            'question_4': [self.cleaned_data['input_4_1'], self.cleaned_data['input_4_2'],
+            self.question_4: [self.cleaned_data['input_4_1'], self.cleaned_data['input_4_2'],
                            self.cleaned_data['input_4_3']],
-        }
+        }}
         return data
 
 
@@ -60,10 +59,10 @@ class TaskOnePart2(forms.Form):
     input_2_4 = forms.CharField(max_length=200, widget=forms.TextInput(attrs={'class': 'form-control'}))
 
     def get_dictionary(self):
-        data = {
-            'question_1': [self.cleaned_data['input_1_1'], self.cleaned_data['input_1_2'],
+        data = {'part_02': {
+            self.question_1: [self.cleaned_data['input_1_1'], self.cleaned_data['input_1_2'],
                            self.cleaned_data['input_1_3'], self.cleaned_data['input_1_4']],
-            'question_2': [self.cleaned_data['input_2_1'], self.cleaned_data['input_2_2'],
+            self.question_2: [self.cleaned_data['input_2_1'], self.cleaned_data['input_2_2'],
                            self.cleaned_data['input_2_3'], self.cleaned_data['input_2_4']],
-        }
+        }}
         return data
