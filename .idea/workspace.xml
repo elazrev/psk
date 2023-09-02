@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1dfd205c-8ce2-49eb-a372-6568848c810e" name="Changes" comment="Merge branch 'main' of https://github.com/elazrev/psk" />
+    <list default="true" id="1dfd205c-8ce2-49eb-a372-6568848c810e" name="Changes" comment="Merge branch 'main' of https://github.com/elazrev/psk">
+      <change afterPath="$PROJECT_DIR$/surveys/migrations/0019_fullanswer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/templates/static_tasks/01_first_task_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/store/templates/static_tasks/01_first_task_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/templates/static_tasks/02_first_task_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/store/templates/static_tasks/02_first_task_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/store/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/surveys/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/surveys/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/surveys/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/surveys/models.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
