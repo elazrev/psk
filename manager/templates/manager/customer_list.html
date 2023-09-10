@@ -1,0 +1,114 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>רשימת הלקוחות של</h1>
+    <h4 class="mb-3">{{ user.first_name }}</h4>
+
+    <form method="get" action="{% url 'manager:invited_customers_list' %}" class="mb-5">
+        <label for="sort_by">:סדר לפי</label>
+        <select name="sort_by" id="sort_by">
+            <option value="date_added">תאריך הצטרפות</option>
+            <option value="role">תפקיד</option>
+            <option value="first_name">שם פרטי</option>
+            <option value="last_name">שם משפחה</option>
+        </select>
+
+        <label for="show_patients">מטופלים</label>
+        <input type="checkbox" name="show_patients" id="show_patients" value="true">
+
+        <label for="show_managers">מנהלים</label>
+        <input type="checkbox" name="show_managers" id="show_managers" value="true">
+
+        <button type="submit" class="btn btn-primary">בחר</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>שם פרטי</th>
+                <th>שם משפחה</th>
+                <th>שם משתמש</th>
+                <th>סוג משתמש</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>
+                    <img src="{{ customer.user.profile.image.url }}" alt="{{ customer.user.username }} Profile Photo" width="45">
+                </td>
+                <td>{{ customer.user.first_name }}</td>
+                <td>{{ customer.user.last_name }}</td>
+                <td>{{ customer.user.username }}</td>
+                {% if customer.is_manager %}
+                <td><p>מנהל</p></td>
+                {% else %}
+                <td><p>מטופל</p></td>
+                {% endif %}
+                <!-- Add more columns as needed -->
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No customers found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    
+    
+    
+
+
+    <!-- Pagination Links -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </li>
+                {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+
+      
+  
+</div>
+{% endblock %}

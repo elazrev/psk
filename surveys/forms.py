@@ -124,6 +124,6 @@ class DynamicQuestionnaireForm(forms.Form):
                     )
                 self.initial[field_name] = ''  # Set initial value for this field if needed
 
-                print(f"Added field: {field_name}, type: {type(self.fields[field_name])}")
+                # print(f"Added field: {field_name}, type: {type(self.fields[field_name])}") #Debugging 
         
 

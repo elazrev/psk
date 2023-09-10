@@ -8,9 +8,14 @@
       <div class="media-body">
         <h2 class="account-heading">{{ user.username}}</h2>
         <p class="text-center">{{ user.email }}</p>
+        {% if user.is_manager %}
+        <p class="text-center">מנהל/מטפל</p>
+        {% endif %}
+      
       </div>
     </div>
     </div>
+    
     <!--
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}

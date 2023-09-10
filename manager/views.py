@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import InvitationForm
 from .utils import generate_invitee_code
+from django.views.generic import ListView
 from .models import Invitation
 from django.contrib import messages
+from users.models import Profile
 
 
 def home(request):
@@ -43,3 +45,41 @@ def delete_invitation(request, invitation_id):
     invitation.delete()
     messages.success(request, 'Invitation deleted successfully.')
     return redirect('manager:invitations-view')
+
+#customers page
+
+class InvitedCustomersListView(ListView):
+    model = Profile
+    template_name = 'manager/customer_list.html'
+    context_object_name = 'customers'
+    paginate_by = 10  # Number of profiles to show per page
+
+    def get_queryset(self):
+        # Base queryset
+        queryset = Profile.objects.filter(invited_by=self.request.user)
+
+        # Sorting options
+        sort_by = self.request.GET.get('sort_by')
+        if sort_by == 'date_added':
+            queryset = queryset.order_by('user__date_joined')
+        elif sort_by == 'role':
+            queryset = queryset.order_by('is_manager', 'is_patient')
+        elif sort_by == 'first_name':
+            queryset = queryset.order_by('user__first_name')
+        elif sort_by == 'last_name':
+            queryset = queryset.order_by('user__last_name')
+
+        # Filtering options
+        show_patients = self.request.GET.get('show_patients')
+        show_managers = self.request.GET.get('show_managers')
+        
+        if show_patients:
+            queryset = queryset.filter(is_patient=True)
+        if show_managers:
+            queryset = queryset.filter(is_manager=True)
+
+        return queryset
+
+
+            
+
