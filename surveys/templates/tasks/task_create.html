@@ -1,0 +1,63 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Create a New Full Task</h2>
+  
+  <div class="card">
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" name="title" id="title" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="creator">Creator:</label>
+          <input type="text" name="creator" id="creator" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.category.id_for_label }}">Category:</label>
+            {{ form.category }}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.sub_category.id_for_label }}">Sub-Category:</label>
+            {{ form.sub_category }}
+        </div>
+        
+        <div class="form-group">
+          <label for="sub_title">Sub Title:</label>
+          <textarea name="sub_title" id="sub_title" class="form-control"></textarea>
+        </div>
+        
+        
+    </div>
+  </div>
+  <div class="card mt-5">
+  <div class="form-group">
+    {% for content_obj in form.content %}
+    <div class="content-object">
+      <div class="form-group">
+        <label>Object Type:</label>
+        {{ content_obj.obj_type }}
+      </div>
+      <div class="form-group">
+        <label>Object Content:</label>
+        {{ content_obj.obj_content }}
+      </div>
+      <!-- Add other fields as per your requirement -->
+    </div>
+  {% endfor %}
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Create Full Task</button>
+    </div>
+</form>
+
+  <a href="{% url 'surveys:task_list' %}" class="btn btn-secondary mt-3">Back to Full Task List</a>
+</div>
+{% endblock %}

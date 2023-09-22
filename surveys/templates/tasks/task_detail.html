@@ -1,0 +1,15 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+  <h2>Full Task Details</h2>
+  <h3>{{ fulltask.title }}</h3>
+  <p>Creator: {{ fulltask.creator }}</p>
+  <p>Category: {{ fulltask.get_category_display }}</p>
+  <p>Sub-Category: {{ fulltask.get_sub_category_display }}</p>
+  <p>Sub Title: {{ fulltask.sub_title }}</p>
+  <p>Content:</p>
+  <pre>{{ fulltask.content|json_script:"fulltask-content" }}</pre>
+
+  <a href="{% url 'surveys:task_list' %}">Back to Full Task List</a>
+  <a href="{% url 'surveys:task_update' fulltask.pk %}">Edit Full Task</a>
+{% endblock %}

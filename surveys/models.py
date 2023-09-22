@@ -107,6 +107,7 @@ class Answer(models.Model):
     def completing_spliter(self):
         return self.content.split(';')
 
+
 # New structure of questions and answers
 CATEGORY_CHOICES = [
         ('general', 'כללי'),
@@ -130,17 +131,22 @@ class FullTask(models.Model):
     sub_category = models.CharField(max_length=200, default="survey", choices=SUB_CATEGORY_CHOICES)
     title = models.CharField(max_length=225)
     sub_title = models.TextField(null=True, blank=True)
-    content = models.JSONField(null=True, blank=True)
+    content = models.JSONField(default=dict, null=True, blank=True)
     
+    def __str__(self):
+        return f"{self.title} ({self.id})"
+   
+        
     
     
 class FullAnswer(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sender")
     responder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="responder")
     questionnaire = models.CharField(max_length=200, null=True, blank=True)
+    answered_task = models.ForeignKey(FullTask, on_delete=models.CASCADE, null=True, blank=True)
     content = models.JSONField(null=True, blank=True)
-    date_sent = models.DateTimeField(default=now, null=True, blank=True)
-    date_responed = models.DateTimeField(null=True, blank=True)
+    date_sent = models.DateField(default=now, null=True, blank=True)
+    date_responed = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"Responder: {self.responder}, Questionnaire: {self.questionnaire}, Date: {self.date_responed}"

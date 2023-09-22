@@ -10,7 +10,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import HiddenInput
 from .forms import ObjForm, AnswerForm
 from django.views.generic.edit import FormView
-from formtools.wizard.views import SessionWizardView
+
 
 
 
@@ -292,4 +292,44 @@ class AnswerCreateView(LoginRequiredMixin, FormView):
         return context
 
     
+# New structure of handlings
+
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView, UpdateView
+from .models import FullTask, FullAnswer
+from .forms import FullTaskForm, FullAnswerForm
+
+class FullTaskListView(ListView):
+    model = FullTask
+    template_name = 'tasks/task_list.html'
+    context_object_name = 'fulltasks'  # The variable name to use in the template
+    
+class FullTaskDetailView(DetailView):
+    model = FullTask
+    template_name = 'tasks/task_detail.html'  # Update with your template path
+    context_object_name = 'fulltask'
+
+class FullTaskCreateView(CreateView):
+    model = FullTask
+    form_class = FullTaskForm
+    template_name = 'tasks/task_create.html'
+    success_url = reverse_lazy('task_list')  # Define a URL to redirect to upon successful form submission
+
+class FullTaskUpdateView(UpdateView):
+    model = FullTask
+    form_class = FullTaskForm
+    template_name = 'tasks/task_update.html'
+    success_url = reverse_lazy('task_list')  # Define a URL to redirect to upon successful form submission
+
+class FullAnswerCreateView(CreateView):
+    model = FullAnswer
+    form_class = FullAnswerForm
+    template_name = 'fullanswer_create.html'
+    success_url = reverse_lazy('fullanswer_list')  # Define a URL to redirect to upon successful form submission
+
+class FullAnswerUpdateView(UpdateView):
+    model = FullAnswer
+    form_class = FullAnswerForm
+    template_name = 'fullanswer_update.html'
+    success_url = reverse_lazy('fullanswer_list')  # Define a URL to redirect to upon successful form submission
 

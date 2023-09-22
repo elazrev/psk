@@ -1,0 +1,36 @@
+{% extends 'manager/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>List of Full Tasks</h2>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Sub-Category</th>
+        <th>Creator</th>
+        <th>Creation Date</th>
+        <th>Actions</th> <!-- New column for Edit option -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for fulltask in fulltasks %}
+        <tr>
+          <td><a href="{% url 'surveys:task_detail' fulltask.pk %}">{{ fulltask.title }}</a></td>
+          <td>{{ fulltask.get_category_display }}</td>
+          <td>{{ fulltask.get_sub_category_display }}</td>
+          <td>{{ fulltask.creator.username }}</td>
+          <td>{{ fulltask.creation_date }}</td>
+          <td>
+            <a href="{% url 'surveys:task_update' fulltask.pk %}" class="btn btn-primary btn-sm">Edit</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <a href="{% url 'surveys:task_create' %}" class="btn btn-primary">Create a new Full Task</a>
+</div>
+{% endblock %}

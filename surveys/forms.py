@@ -127,3 +127,60 @@ class DynamicQuestionnaireForm(forms.Form):
                 # print(f"Added field: {field_name}, type: {type(self.fields[field_name])}") #Debugging 
         
 
+from .models import FullTask, FullAnswer, CATEGORY_CHOICES, SUB_CATEGORY_CHOICES
+
+OBJ_TYPE_CHOICES = (
+        ('title', 'כותרת'),
+        ('explanation', 'הסבר'),
+        ('image', 'תמונה'),
+        ('hints', 'רמזים'),
+        ('open_question', 'שאלה פתוחה'),
+        ('single_choice', 'שאלת בחירה בודדת'),
+        ('multiple_choice', 'שאלת בחירה מרובה'),
+        ('rating', 'שאלת דירוג'),
+        ('agreement', 'שאלת הצבה'),
+        ('self_rating', 'שאלת דירוג עצמי'),
+        ('self_choice', 'שאלת בחירה עצמית'),
+        ('Completing', 'השלמת משפטים'),
+    )
+
+class ContentForm(forms.Form):
+    obj_type = forms.ChoiceField(choices=OBJ_TYPE_CHOICES)
+    obj_content = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}))
+    answer_field = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}), required=False)
+    hints = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control'}), required=False)
+    related_with = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=False)
+    
+ 
+class FullTaskForm(forms.ModelForm):
+    content = forms.JSONField(widget=forms.HiddenInput(), required=False)
+    category = forms.ChoiceField(choices=[], required=True, widget=forms.Select(attrs={'class': 'form-control'}))
+    sub_category = forms.ChoiceField(choices=[], required=True, widget=forms.Select(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = FullTask
+        fields = ['title', 'creator', 'category', 'sub_category', 'sub_title', 'category']
+
+    def __init__(self, *args, **kwargs):
+        super(FullTaskForm, self).__init__(*args, **kwargs)
+        self.fields['category'].choices = CATEGORY_CHOICES
+        self.fields['sub_category'].choices = SUB_CATEGORY_CHOICES
+
+        # Set initial value for content if editing an existing task
+        if self.instance.pk:
+            self.initial['content'] = self.instance.content
+
+    def clean_content(self):
+        content_data = self.cleaned_data.get('content')
+        content_form = ContentForm(content_data)
+
+        if not content_form.is_valid():
+            raise forms.ValidationError('Invalid content data')
+
+        return content_form.cleaned_data
+
+
+class FullAnswerForm(forms.ModelForm):
+    class Meta:
+        model = FullAnswer
+        fields = ['sender', 'responder', 'questionnaire', 'answered_task', 'content', 'date_sent', 'date_responed']
